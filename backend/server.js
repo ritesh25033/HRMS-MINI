@@ -1,44 +1,79 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const authRoutes = require("./routes/authRoutes");
-const employeeRoutes = require("./routes/employeeRoutes");
-const attendanceRoutes = require("./routes/attendanceRoutes");
-const leaveRoutes = require("./routes/leaveRoutes");
-const payrollRoutes = require("./routes/payrollRoutes");
+// const express = require("express")
+// const mongoose = require("mongoose")
+// const cors = require("cors")
+// const dotenv = require("dotenv")
 
-const app = express();
+// // Load environment variables
+// dotenv.config()
+
+// // Import routes
+// const authRoutes = require("./routes/auth")
+// const employeeRoutes = require("./routes/employees")
+// const attendanceRoutes = require("./routes/attendance")
+// const leaveRoutes = require("./routes/leave")
+// const payrollRoutes = require("./routes/payroll")
+
+// const app = express()
+// const PORT = process.env.PORT || 5000
+
+// // Middleware
+// app.use(express.json({ limit: "30mb" }))
+// app.use(express.urlencoded({ limit: "30mb", extended: true }))
+// app.use(cors())
+
+// // Routes
+// app.use("/api/auth", authRoutes)
+// app.use("/api/employees", employeeRoutes)
+// app.use("/api/attendance", attendanceRoutes)
+// app.use("/api/leave", leaveRoutes)
+// app.use("/api/payroll", payrollRoutes)
+
+// // MongoDB Connection
+// mongoose
+//   .connect(process.env.MONGODB_URI)
+//   .then(() => {
+//     console.log("Connected to MongoDB")
+//     app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
+//   })
+//   .catch((error) => console.log("MongoDB connection error:", error.message))
+
+
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
+const dotenv = require("dotenv")
+
+// Load environment variables
+dotenv.config()
+
+// Import routes
+const authRoutes = require("./routes/auth")
+const employeeRoutes = require("./routes/employees")
+const attendanceRoutes = require("./routes/attendance")
+const leaveRoutes = require("./routes/leave")
+const payrollRoutes = require("./routes/payroll")
+
+const app = express()
+const PORT = process.env.PORT || 5000
 
 // Middleware
-app.use(express.json()); // Parse JSON request body
-app.use(cors()); // Enable CORS for frontend requests
+app.use(express.json({ limit: "30mb" }))
+app.use(express.urlencoded({ limit: "30mb", extended: true }))
+app.use(cors())
 
-// Add Authentication Routes
-app.use("/api/auth", authRoutes);
-// Employee Management Routes
-app.use("/api/employees", employeeRoutes);
-// Attendance Routes
-app.use("/api/attendance", attendanceRoutes);
-// Leave Routes
-app.use("/api/leaves", leaveRoutes);
-// Payroll Routes
-app.use("/api/payrolls", payrollRoutes);
+// Routes
+app.use("/api/auth", authRoutes)
+app.use("/api/employees", employeeRoutes)
+app.use("/api/attendance", attendanceRoutes)
+app.use("/api/leave", leaveRoutes)
+app.use("/api/payroll", payrollRoutes)
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB")
+    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
   })
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error(" MongoDB Connection Error:", err));
+  .catch((error) => console.log("MongoDB connection error:", error.message))
 
-// Default Route
-app.get("/", (req, res) => {
-  res.send("Mini HRMS API is Running...");
-});
-
-// Server Listening
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
